@@ -42,8 +42,8 @@ public class write extends HttpServlet{
 			String password = "1111";
 			conn = DriverManager.getConnection(url,userid,password);
 			
-			stmt = conn.prepareStatement("INSERT INTO LETTERS(EMAIL,PASSWORD,CONTENT)"
-					+ "VALUES (?,?,?)");
+			stmt = conn.prepareStatement("INSERT INTO LETTERS(EMAIL,PASSWORD,CONTENT,WRITETIME,MODIFYTIME)"
+					+ "VALUES (?,?,?,NOW(),NOW())");
 			stmt.setString(1, request.getParameter("email"));
 			stmt.setString(2, request.getParameter("pw"));
 			stmt.setString(3, request.getParameter("content"));

@@ -1,5 +1,6 @@
 package com.mycompany.myapp;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -75,6 +76,12 @@ public class HomeController {
 	}
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public String list(Locale locale, Model model, HttpServletRequest request) {
+		try {
+			request.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -87,21 +94,26 @@ public class HomeController {
 			conn = DriverManager.getConnection(url,userid,password);
 			
 			stmt = conn.createStatement();
+			model.addAttribute("serverTime", "4" );
 			rs = stmt.executeQuery("SELECT *"
-					+ "FROM LETTERS"
-					+ "ORDER BY INDEX DESC");
+					+ " FROM LETTERS");
+			model.addAttribute("serverTime", "5" );
 			ArrayList<page> pages = new ArrayList<page>();
+			model.addAttribute("serverTime", "6" );
 			while(rs.next()){
 				pages.add(new page()
 				.setIndex(rs.getInt("INDEX"))
 				.setEmail(rs.getString("EMAIL"))
-				.setPassword(rs.getString("PASSWORD"))
 				.setContent(rs.getString("CONTENT"))
 				.setCreatedDate(rs.getDate("WRITETIME"))
-				.setModifiedDate(rs.getDate("MODIFYTIME")));
+				.setCreatedTime(rs.getTime("WRITETIME"))
+				.setModifiedDate(rs.getDate("MODIFYTIME"))
+				.setModifiedTime(rs.getTime("MODIFYTIME")));
 			}
 			model.addAttribute("pages", pages);
+			model.addAttribute("serverTime", "잘됨?" );
 		} catch(Exception e){
+			
 		}
 		
 		return "list";

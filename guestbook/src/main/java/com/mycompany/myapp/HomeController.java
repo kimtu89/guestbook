@@ -3,9 +3,14 @@ package com.mycompany.myapp;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,5 +72,38 @@ public class HomeController {
 		}
 		
 		return "write_done";
+	}
+	@RequestMapping(value = "list", method = RequestMethod.GET)
+	public String list(Locale locale, Model model, HttpServletRequest request) {
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		try{
+			Class.forName("cubrid.jdbc.driver.CUBRIDDriver");
+			
+			String url = "jdbc:cubrid:localhost:33000:guestbook:::";
+			String userid = "dba";
+			String password = "1111";
+			conn = DriverManager.getConnection(url,userid,password);
+			
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT *"
+					+ "FROM LETTERS"
+					+ "ORDER BY INDEX DESC");
+			ArrayList<page> pages = new ArrayList<page>();
+			while(rs.next()){
+				pages.add(new page()
+				.setIndex(rs.getInt("INDEX"))
+				.setEmail(rs.getString("EMAIL"))
+				.setPassword(rs.getString("PASSWORD"))
+				.setContent(rs.getString("CONTENT"))
+				.setCreatedDate(rs.getDate("WRITETIME"))
+				.setModifiedDate(rs.getDate("MODIFYTIME")));
+			}
+			model.addAttribute("pages", pages);
+		} catch(Exception e){
+		}
+		
+		return "list";
 	}
 }

@@ -10,19 +10,25 @@
 </head>
 <body>
 <h1>글목록</h1>
+<form action='write'>
+<input type='submit' value='글쓰기'>
+</form><br><br>
 <%
 ArrayList<page> pages = (ArrayList<page>)request.getAttribute("pages");
 for(page P : pages){
 %>
-NO.<%=P.getIndex() %>
-이메일 : <%=P.getEmail() %><br>
-본문 : <%=P.getContent() %>
+<table>
+<tr><td>NO.<%=P.getIndex() %></td>
+<td>이메일 : <%=P.getEmail() %></td></tr>
+<tr><td>생성시간 : <%=P.getCreatedDate() %> <%=P.getCreatedTime() %></td></tr>
+<tr><td>수정시간 : <%=P.getModifiedDate() %> <%=P.getModifiedTime() %></td></tr>
+<tr><td>본문 : <%=P.getContent() %></td></tr>
+</table>
 <form action='modify' method='post'>
 <input type='hidden' name='no' value='<%=P.getIndex() %>'>
 <input type='submit' value='수정'>
-</form><br>
-생성시간 : <%=P.getCreatedDate() %> <%=P.getCreatedTime() %><br>
-수정시간 : <%=P.getModifiedDate() %> <%=P.getModifiedTime() %><br><br>
+</form>
+<br><br>
 <%}%>
 </body>
 </html>

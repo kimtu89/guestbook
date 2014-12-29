@@ -52,7 +52,7 @@ public class HomeController {
 	}
 	@RequestMapping(value = "write_done", method = RequestMethod.POST)
 	public String write_done(@RequestParam(value="email") String email,
-			@RequestParam(value="pw") String pw, @RequestParam(value="content") String content, Model model) {
+			@RequestParam(value="pw") String pw, @RequestParam(value="content") String content) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try{
@@ -75,13 +75,7 @@ public class HomeController {
 		return "write_done";
 	}
 	@RequestMapping(value = "list", method = RequestMethod.GET)
-	public String list(Locale locale, Model model, HttpServletRequest request) {
-		try {
-			request.setCharacterEncoding("UTF-8");
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+	public String list(Locale locale, Model model) {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -94,12 +88,8 @@ public class HomeController {
 			conn = DriverManager.getConnection(url,userid,password);
 			
 			stmt = conn.createStatement();
-			model.addAttribute("serverTime", "4" );
-			rs = stmt.executeQuery("SELECT *"
-					+ " FROM LETTERS");
-			model.addAttribute("serverTime", "5" );
+			rs = stmt.executeQuery("SELECT * FROM LETTERS ORDER BY [INDEX] DESC");
 			ArrayList<page> pages = new ArrayList<page>();
-			model.addAttribute("serverTime", "6" );
 			while(rs.next()){
 				pages.add(new page()
 				.setIndex(rs.getInt("INDEX"))
@@ -111,11 +101,41 @@ public class HomeController {
 				.setModifiedTime(rs.getTime("MODIFYTIME")));
 			}
 			model.addAttribute("pages", pages);
-			model.addAttribute("serverTime", "잘됨?" );
 		} catch(Exception e){
 			
 		}
 		
 		return "list";
+	}
+	@RequestMapping(value = "modify", method = RequestMethod.POST)
+	public String modify(@RequestParam(value="no") String no, Model model) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try{
+			Class.forName("cubrid.jdbc.driver.CUBRIDDriver");
+			
+			String url = "jdbc:cubrid:localhost:33000:guestbook:::";
+			String userid = "dba";
+			String password = "1111";
+			conn = DriverManager.getConnection(url,userid,password);
+			
+			stmt = conn.prepareStatement("SELECT * FROM LETTERS WHERE INDEX=?");
+			stmt.setString(1, no);
+			rs = stmt.executeQuery(/*"SELECT * FROM LETTERS WHERE INDEX=10"*/);
+			page P = new page();
+			P.setIndex(rs.getInt("INDEX"))
+			.setEmail(rs.getString("EMAIL"))
+			.setPassword(rs.getString("PASSWORD"))
+			.setContent(rs.getString("CONTENT"))
+			.setCreatedDate(rs.getDate("WRITETIME"))
+			.setCreatedTime(rs.getTime("WRITETIME"))
+			.setModifiedDate(rs.getDate("MODIFYTIME"))
+			.setModifiedTime(rs.getTime("MODIFYTIME"));
+		model.addAttribute("result", P);
+		} catch(Exception e){
+			
+		}
+		return "modify";
 	}
 }

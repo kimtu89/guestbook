@@ -16,13 +16,13 @@ for(page P : pages){
 %>
 NO.<%=P.getIndex() %>
 이메일 : <%=P.getEmail() %><br>
-본문 : <%=P.getContent() %><br>
+본문 : <%=P.getContent() %>
+<form action='modify' method='post'>
+<input type='hidden' name='no' value='<%=P.getIndex() %>'>
+<input type='submit' value='수정'>
+</form><br>
 생성시간 : <%=P.getCreatedDate() %> <%=P.getCreatedTime() %><br>
 수정시간 : <%=P.getModifiedDate() %> <%=P.getModifiedTime() %><br><br>
 <%}%>
-<%
-String a = (String)request.getAttribute("serverTime");
-%>
-<%=a %>
 </body>
 </html>

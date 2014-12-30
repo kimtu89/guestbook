@@ -148,7 +148,7 @@ public class HomeController {
 			prePassword = rs.getString("PASSWORD");
 			
 			if(prePassword.equals(pw)){
-				stmt = conn.prepareStatement("UPDATE LETTERS SET EMAIL=?,CONTENT=? WHERE [INDEX]=?");
+				stmt = conn.prepareStatement("UPDATE LETTERS SET EMAIL=?,CONTENT=?,MODIFYTIME=NOW() WHERE [INDEX]=?");
 				stmt.setString(1, email);
 				stmt.setString(2, content);
 				stmt.setString(3, num);

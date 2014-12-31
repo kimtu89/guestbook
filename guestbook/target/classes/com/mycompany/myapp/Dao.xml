@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.myapp.Dao">
+	<resultMap type="page" id="pageResultMap">
+		<id column="INDEX"		 property="index"/>
+		<result column="EMAIL"		 property="email"/>
+		<result column="PASSWORD"	 property="password"/>
+		<result column="CONTENT"	 property="content"/>
+		<result column="WRITETIME"	 property="createdDate"		 javaType="java.sql.Timestamp"/>
+		<result column="MODIFYTIME"	 property="modifiedDate"	 javaType="java.sql.Timestamp"/>
+	</resultMap>
+	<select id="selectList" resultMap="pageResultMap">
+		SELECT * FROM LETTERS ORDER BY [INDEX] DESC
+	</select>
+	<insert id="insertPage" parameterType="page">
+		INSERT INTO LETTERS(EMAIL,PASSWORD,CONTENT,WRITETIME,MODIFYTIME) 
+		VALUES (#{email},#{password},#{content},NOW(),NOW())
+	</insert>
+	<select id="selectPage" parameterType="int" resultMap="pageResultMap">
+		SELECT * FROM LETTERS WHERE [INDEX]=#{value}
+	</select>
+	<update id="updatePage" parameterType="page">
+		UPDATE LETTERS SET EMAIL=#{email},CONTENT=#{content},MODIFYTIME=NOW() WHERE [INDEX]=#{index}
+	</update>
+</mapper>

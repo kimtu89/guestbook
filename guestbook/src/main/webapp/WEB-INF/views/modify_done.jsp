@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-${text}<br>
+<h1>${text}</h1><br>
 <a href='/myapp'>확인</a>
 </body>
 </html>

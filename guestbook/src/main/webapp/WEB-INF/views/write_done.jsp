@@ -8,6 +8,7 @@
 <title>등록됨</title>
 </head>
 <body>
-<h1>등록됨</h1>
+<h1>${text}</h1><br>
+<a href='/myapp'>확인</a>
 </body>
 </html>

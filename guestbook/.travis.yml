@@ -2,4 +2,8 @@ language: java
 jdk:
   - oraclejdk8
   - oraclejdk7
+<<<<<<< HEAD
   - openjdk6
+=======
+  - openjdk6
+>>>>>>> 75e7386a5c6162cb0de2e663e2aa233447c64add

@@ -83,8 +83,8 @@ public class controller {
 				String prePassword = P.getPassword();
 				if(prePassword.equals(pw)){
 					P.setEmail(email).setContent(content);
-					dao.updatePage(P);
 					model.addAttribute("text", "수정 되었습니다.");
+					dao.updatePage(P);
 					return "write_done";
 				}
 				else{

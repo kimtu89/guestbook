@@ -21,7 +21,7 @@ function check_mail(value){
 <input type='hidden' name='no' value='${page.index}'>
 email : <input type='text' name='email' value='${page.email}' onBlur="check_mail(email.value)"><br>
 pw : <input type='password' name='pw'><br>
-content : <input type='text' name='content' value='${page.content}' style='height:100px'><br>
+content : <textarea name='content' rows="10" cols="50">${page.content}</textarea><br>
 <input type='submit' onClick="check_mail(email.value)" value='쓰기'>
 </form>
 </body>

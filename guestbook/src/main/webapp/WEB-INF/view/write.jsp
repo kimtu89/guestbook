@@ -19,7 +19,7 @@ function check_mail(value){
 <form name='write_form' action='write_done' method='post'>
 email : <input type='text' name='email' onBlur="check_mail(email.value)"><br>
 pw : <input type='password' name='pw'><br>
-content : <input type='text' name='content' style='height:100px'><br>
+content : <textarea name='content' rows="10" cols="50"></textarea><br>
 <input type='submit' onClick="check_mail(email.value)" value='쓰기'>
 </form>
 </body>
